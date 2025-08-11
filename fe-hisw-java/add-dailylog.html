@@ -195,7 +195,7 @@
             <div class="form-actions">
               <button type="button" class="btn-secondary"
                 onclick="window.location.href='main-page.html'">Cancel</button>
-              <button type="submit" class="btn-primary">Save Daily Log</button>
+              <button type="submit" id="submitBtn" class="btn-primary">Save Daily Log</button>
             </div>
           </form>
         </div>
@@ -240,11 +240,22 @@
       const date = this.value;
       if (!date) return;
 
+      const submitBtn = document.getElementById("submitBtn");
+
       try {
         const res = await fetch(`http://localhost:8286/api/healthrecords/user/${userId}/log/${date}`, {
           method: "GET",
           headers: { "Authorization": "Bearer " + token }
         });
+
+        // 💡 KIỂM TRA PHẢN HỒI RỖNG
+        if (res.status === 204 || res.headers.get("content-length") === "0") {
+            // Không có dữ liệu, gọi resetForm
+            resetForm();
+            isUpdateMode = false;
+            submitBtn.textContent = "Save Daily Log";
+            return; // Dừng thực thi tại đây
+        }
 
         if (res.ok) {
           const data = await res.json();
