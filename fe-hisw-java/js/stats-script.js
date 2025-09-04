@@ -2,7 +2,7 @@
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
-    const base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
+    const base64 = decodeURIComponent(atob(base64Url).split('').map(function (c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(base64);
@@ -110,7 +110,7 @@ async function renderAllCharts(selectedDateStr) {
   // 📅 Hiển thị khoảng tuần
   const weekRangeElem = document.getElementById("weekRange");
   if (weekRangeElem) {
-    weekRangeElem.textContent = `Tuần: ${getWeekRange(selectedDateStr)}`;
+    weekRangeElem.textContent = `Week cycle: ${getWeekRange(selectedDateStr)}`;
   }
 
   try {
